@@ -131,8 +131,8 @@ export default function TermsPage() {
 
         <S title="Contact">
           Questions about these terms?{' '}
-          <a href="mailto:apadhi6638@gmail.com" style={{ color: '#F4B942', fontWeight: 600, textDecoration: 'none' }}>
-            apadhi6638@gmail.com
+          <a href="mailto:zubaan.live@gmail.com" style={{ color: '#F4B942', fontWeight: 600, textDecoration: 'none' }}>
+            zubaan.live@gmail.com
           </a>
         </S>
       </main>
@@ -143,6 +143,8 @@ export default function TermsPage() {
           <Link href="/privacy" style={{ color: '#8A84A8', textDecoration: 'none' }}>Privacy</Link>
           {' · '}
           <Link href="/terms" style={{ color: '#8A84A8', textDecoration: 'none' }}>Terms</Link>
+          {' · '}
+          <Link href="/delete-account" style={{ color: '#8A84A8', textDecoration: 'none' }}>Delete account</Link>
           {' · '}
           <Link href="/contact" style={{ color: '#8A84A8', textDecoration: 'none' }}>Contact</Link>
         </p>

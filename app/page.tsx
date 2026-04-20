@@ -1607,8 +1607,8 @@ function Footer() {
   const links = [
     { label: 'Privacy Policy', href: '/privacy' },
     { label: 'Terms of Service', href: '/terms' },
+    { label: 'Delete account', href: '/delete-account' },
     { label: 'Support', href: '/contact' },
-    { label: 'Contact', href: '/contact' },
   ]
 
   return (

@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import type { Metadata } from 'next'
 
 const Z = {
   bg: '#14102A',
@@ -15,7 +14,7 @@ const Z = {
   coral: '#E07C6E',
 } as const
 
-const CONTACT_EMAIL = 'apadhi6638@gmail.com'
+const CONTACT_EMAIL = 'zubaan.live@gmail.com'
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', subject: 'General', message: '' })
@@ -113,7 +112,7 @@ export default function ContactPage() {
               >
                 <div style={{ fontSize: 40, marginBottom: 16 }}>✉️</div>
                 <h2 style={{ fontFamily: 'var(--font-fraunces)', fontStyle: 'italic', fontSize: 26, color: Z.gold, marginBottom: 10 }}>
-                  Mail client khul gaya!
+                  Check your mail app
                 </h2>
                 <p style={{ fontFamily: 'var(--font-inter)', fontSize: 14, color: Z.dim, lineHeight: 1.6 }}>
                   Your default mail app should have opened with the message pre-filled.
@@ -291,6 +290,8 @@ export default function ContactPage() {
           <Link href="/privacy" style={{ color: Z.dim, textDecoration: 'none' }}>Privacy</Link>
           {' · '}
           <Link href="/terms" style={{ color: Z.dim, textDecoration: 'none' }}>Terms</Link>
+          {' · '}
+          <Link href="/delete-account" style={{ color: Z.dim, textDecoration: 'none' }}>Delete account</Link>
           {' · '}
           <Link href="/contact" style={{ color: Z.dim, textDecoration: 'none' }}>Contact</Link>
         </p>

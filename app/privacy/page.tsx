@@ -155,7 +155,11 @@ export default function PrivacyPage() {
         <Section title="Data Retention">
           Account data is retained while your account is active. Session history is kept for
           30 days, after which it is automatically deleted. You may delete your account and
-          all associated data at any time from the Settings screen or by emailing us.
+          all associated data at any time from the Settings screen, by visiting{' '}
+          <Link href="/delete-account" style={{ color: '#F4B942', textDecoration: 'none', fontWeight: 600 }}>
+            zubaan.live/delete-account
+          </Link>
+          , or by emailing us.
         </Section>
 
         <Section title="Your Rights">
@@ -170,7 +174,7 @@ export default function PrivacyPage() {
             ]}
           />
           To exercise any of these rights, email us at{' '}
-          <EmailLink email="apadhi6638@gmail.com" />.
+          <EmailLink email="zubaan.live@gmail.com" />.
         </Section>
 
         <Section title="Children">
@@ -187,7 +191,7 @@ export default function PrivacyPage() {
 
         <Section title="Contact">
           Questions about this policy? Reach us at{' '}
-          <EmailLink email="apadhi6638@gmail.com" />.
+          <EmailLink email="zubaan.live@gmail.com" />.
         </Section>
       </main>
 
@@ -262,6 +266,8 @@ function Footer() {
         <Link href="/privacy" style={{ color: '#8A84A8', textDecoration: 'none' }}>Privacy</Link>
         {' · '}
         <Link href="/terms" style={{ color: '#8A84A8', textDecoration: 'none' }}>Terms</Link>
+        {' · '}
+        <Link href="/delete-account" style={{ color: '#8A84A8', textDecoration: 'none' }}>Delete account</Link>
         {' · '}
         <Link href="/contact" style={{ color: '#8A84A8', textDecoration: 'none' }}>Contact</Link>
       </p>
