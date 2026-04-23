@@ -2,73 +2,132 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+:root {
+  /* OKLCH Design Tokens for Ethereal Canvas */
+  --bg-deep: oklch(18% 0.03 290);
+  --bg-surface: oklch(25% 0.04 290);
+  --border-glass: oklch(35% 0.05 290 / 0.5);
+  
+  --text-main: oklch(95% 0.01 290);
+  --text-dim: oklch(70% 0.03 290);
+  
+  --accent-gold: oklch(80% 0.15 70);
+  --accent-gold-glow: oklch(80% 0.15 70 / 0.15);
+  --accent-coral: oklch(70% 0.14 30);
+  --accent-sage: oklch(75% 0.08 170);
+
+  /* Spacing Scale */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 32px;
+  --space-xl: 64px;
+  --space-2xl: 96px;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
 body {
-  background-color: #14102A;
-  color: #F5F0EB;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
   font-family: var(--font-inter), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-/* Waveform bars */
+/* Glassmorphism */
+.glass-panel {
+  background: color-mix(in oklch, var(--bg-surface) 60%, transparent);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-glass);
+}
+
+.glass-nav {
+  background: color-mix(in oklch, var(--bg-deep) 85%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-glass);
+}
+
+/* Scroll-Driven Animations: Progressive Enhancement */
+@supports (animation-timeline: scroll()) {
+  .scroll-reveal {
+    animation: reveal-element linear both;
+    animation-timeline: view();
+    animation-range: entry 10% cover 30%;
+  }
+
+  .scroll-parallax-slow {
+    animation: parallax-element linear both;
+    animation-timeline: scroll();
+    --parallax-distance: 100px;
+  }
+  
+  .scroll-parallax-fast {
+    animation: parallax-element linear both;
+    animation-timeline: scroll();
+    --parallax-distance: 250px;
+  }
+
+  .scroll-scale-up {
+    animation: scale-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+  }
+}
+
+@keyframes reveal-element {
+  from { opacity: 0; transform: translateY(60px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes parallax-element {
+  from { transform: translateY(0); }
+  to { transform: translateY(var(--parallax-distance)); }
+}
+
+@keyframes scale-up {
+  from { opacity: 0; transform: translateY(100px) scale(0.85); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Hero entrance */
+@starting-style {
+  .hero-animate {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+.hero-animate {
+  transition: opacity 1s ease-out, transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.delay-100 { transition-delay: 100ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }
+
+/* Existing Animations */
 .zbar {
   transform-box: fill-box;
-  transform-origin: center;
-  animation: wave 1.5s ease-in-out infinite;
+  transform-origin: bottom;
+  animation: wave 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 @keyframes wave {
   0%, 100% { transform: scaleY(1); }
-  50% { transform: scaleY(0.28); }
+  50% { transform: scaleY(0.4); }
 }
 
-/* Glow pulse */
 .glow-pulse {
-  animation: glowPulse 3s ease-in-out infinite;
+  animation: glowPulse 4s ease-in-out infinite;
 }
 
 @keyframes glowPulse {
-  0%, 100% { opacity: 0.35; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.06); }
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.05); }
 }
 
-/* Fade in up */
-.fade-in-up {
-  animation: fadeInUp 0.7s ease-out both;
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Step number pulse ring */
-.step-ring {
-  position: relative;
-}
-.step-ring::before {
-  content: '';
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  border: 1px solid rgba(244, 185, 66, 0.25);
-}
-
-/* Dashed gold border */
-.gold-dashed {
-  border: 1.5px dashed rgba(244, 185, 66, 0.45);
-}
-
-/* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #14102A; }
-::-webkit-scrollbar-thumb { background: #2A1F4A; border-radius: 3px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--bg-surface); border-radius: 3px; }
