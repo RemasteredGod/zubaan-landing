@@ -36,7 +36,7 @@ function ZubaanMark({ size = 56, animated = true }: { size?: number; animated?: 
 // ─── Founders Note ─────────────────────────────────────────────────────────────
 function FoundersNote() {
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] px-4 w-full max-w-md pointer-events-none">
+    <div className="fixed bottom-6 left-6 z-[100] px-4 w-full max-w-[300px] pointer-events-none hidden md:block">
       <div className="glass-panel border border-[var(--accent-gold-glow)] bg-[rgba(20,16,42,0.85)] rounded-2xl p-4 flex gap-4 items-start shadow-[0_8px_32px_rgba(0,0,0,0.4)] pointer-events-auto transition-transform hover:-translate-y-1">
         <div className="text-[20px] shrink-0">✨</div>
         <div className="flex-1 text-left">
@@ -98,43 +98,69 @@ function Nav() {
 function AppFlowStory() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] })
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // ── Background & Phone Scale ──
   const glowColor = useTransform(scrollYProgress, 
-    [0, 0.2, 0.4, 0.6, 0.8, 1], 
-    ['rgba(244,185,66,0.15)', 'rgba(255,107,107,0.15)', 'rgba(152,193,164,0.15)', 'rgba(244,185,66,0.15)', 'rgba(152,193,164,0.15)', 'rgba(244,185,66,0.15)']
+    [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1], 
+    ['rgba(244,185,66,0.15)', 'rgba(255,107,107,0.15)', 'rgba(152,193,164,0.15)', 'rgba(244,185,66,0.15)', 'rgba(152,193,164,0.15)', 'rgba(255,107,107,0.15)', 'rgba(244,185,66,0.15)', 'rgba(152,193,164,0.15)']
   )
-  const phoneScale = useTransform(scrollYProgress, [0, 0.05], [0.8, 1])
+  
+  const phoneScaleDesktop = useTransform(scrollYProgress, [0, 0.05], [0.8, 1])
+  const phoneScaleMobile = useTransform(scrollYProgress, [0, 0.05], [0.55, 0.65])
+  const phoneScale = isMobile ? phoneScaleMobile : phoneScaleDesktop
   
   // ── Text Overlays (Outside Phone) ──
-  const text1Op = useTransform(scrollYProgress, [0, 0.05, 0.15, 0.2], [0, 1, 1, 0])
-  const text2Op = useTransform(scrollYProgress, [0.2, 0.25, 0.35, 0.4], [0, 1, 1, 0])
-  const text3Op = useTransform(scrollYProgress, [0.4, 0.45, 0.55, 0.6], [0, 1, 1, 0])
-  const text4Op = useTransform(scrollYProgress, [0.6, 0.65, 0.8, 0.85], [0, 1, 1, 0])
-  const text5Op = useTransform(scrollYProgress, [0.85, 0.9, 1], [0, 1, 1])
+  const text1Op = useTransform(scrollYProgress, [0, 0.05, 0.1, 0.12], [0, 1, 1, 0])
+  const text2Op = useTransform(scrollYProgress, [0.12, 0.16, 0.22, 0.26], [0, 1, 1, 0])
+  const text3Op = useTransform(scrollYProgress, [0.26, 0.3, 0.36, 0.4], [0, 1, 1, 0])
+  const text4Op = useTransform(scrollYProgress, [0.4, 0.44, 0.52, 0.56], [0, 1, 1, 0])
+  const text5Op = useTransform(scrollYProgress, [0.56, 0.6, 0.68, 0.72], [0, 1, 1, 0])
+  const text6Op = useTransform(scrollYProgress, [0.72, 0.76, 0.84, 0.88], [0, 1, 1, 0])
+  const text7Op = useTransform(scrollYProgress, [0.88, 0.92, 1], [0, 1, 1])
 
   // ── Phone Internal Phases ──
-  const splashOp = useTransform(scrollYProgress, [0, 0.08, 0.1], [1, 1, 0])
-  const setupOp = useTransform(scrollYProgress, [0.1, 0.12, 0.18, 0.2], [0, 1, 1, 0])
+  const splashOp = useTransform(scrollYProgress, [0, 0.05, 0.08], [1, 1, 0])
+  const setupOp = useTransform(scrollYProgress, [0.08, 0.1, 0.12, 0.14], [0, 1, 1, 0])
   
-  const homeOp = useTransform(scrollYProgress, [0.2, 0.22, 0.38, 0.4], [0, 1, 1, 0])
-  const screenshotY = useTransform(scrollYProgress, [0.25, 0.3], [200, 0])
-  const screenshotOp = useTransform(scrollYProgress, [0.25, 0.3, 0.38, 0.4], [0, 1, 1, 0])
+  const homeOp = useTransform(scrollYProgress, [0.14, 0.16, 0.24, 0.26], [0, 1, 1, 0])
+  const screenshotY = useTransform(scrollYProgress, [0.16, 0.2], [200, 0])
+  const screenshotOp = useTransform(scrollYProgress, [0.16, 0.2, 0.24, 0.26], [0, 1, 1, 0])
 
-  const processingOp = useTransform(scrollYProgress, [0.4, 0.42, 0.48, 0.5], [0, 1, 1, 0])
-  const spinnerRot = useTransform(scrollYProgress, [0.4, 0.5], [0, 360])
+  const processingOp = useTransform(scrollYProgress, [0.26, 0.28, 0.36, 0.4], [0, 1, 1, 0])
+  const spinnerRot = useTransform(scrollYProgress, [0.26, 0.4], [0, 720])
 
-  const repliesOp = useTransform(scrollYProgress, [0.5, 0.52, 0.78, 0.8], [0, 1, 1, 0])
-  const replyFlirtyOp = useTransform(scrollYProgress, [0.5, 0.55, 0.6], [0, 1, 0])
-  const replySavageOp = useTransform(scrollYProgress, [0.6, 0.65, 0.7], [0, 1, 0])
-  const replyChillOp = useTransform(scrollYProgress, [0.7, 0.75, 0.8], [0, 1, 1]) 
+  const repliesOp = useTransform(scrollYProgress, [0.4, 0.42, 0.52, 0.56], [0, 1, 1, 0])
+  const replyFlirtyOp = useTransform(scrollYProgress, [0.42, 0.44, 0.56], [0, 1, 0])
+  const replySavageOp = useTransform(scrollYProgress, [0.45, 0.47, 0.56], [0, 1, 0])
+  const replyChillOp = useTransform(scrollYProgress, [0.48, 0.5, 0.56], [0, 1, 1]) 
 
-  const coachingOp = useTransform(scrollYProgress, [0.8, 0.82, 1], [0, 1, 1])
-  const recordOp = useTransform(scrollYProgress, [0.85, 0.9], [0, 1])
-  const scoreOp = useTransform(scrollYProgress, [0.9, 0.95], [0, 1])
+  const tuneOp = useTransform(scrollYProgress, [0.56, 0.58, 0.68, 0.72], [0, 1, 1, 0])
+  const sliderX = useTransform(scrollYProgress, [0.6, 0.65], [0, 80])
+
+  const coachingOp = useTransform(scrollYProgress, [0.72, 0.74, 0.84, 0.88], [0, 1, 1, 0])
+  const recordOp = useTransform(scrollYProgress, [0.75, 0.78], [0, 1])
+  const scoreOp = useTransform(scrollYProgress, [0.79, 0.82], [0, 1])
+
+  const shareOp = useTransform(scrollYProgress, [0.88, 0.9, 1], [0, 1, 1])
+  const voiceNoteY = useTransform(scrollYProgress, [0.92, 0.96], [50, 0])
+  const voiceNoteOp = useTransform(scrollYProgress, [0.92, 0.96], [0, 1])
+
+  const textClassesBoth = "absolute z-30 font-[family-name:var(--font-fraunces)] italic tracking-tight leading-tight transition-all duration-500 " +
+    "bottom-[8vh] left-1/2 -translate-x-1/2 w-[90%] max-w-sm text-2xl text-center glass-panel px-6 py-5 rounded-2xl shadow-2xl border-[var(--accent-gold-glow)] " +
+    "md:bottom-auto md:left-auto md:w-auto md:max-w-lg md:text-[clamp(2.5rem,5vw,4.5rem)] md:text-left md:bg-transparent md:px-0 md:py-0 md:rounded-none md:border-none md:shadow-none md:z-10"
+
+  const springTransition = { type: "spring" as const, stiffness: 400, damping: 30 }
 
   return (
-    <div ref={containerRef} className="relative w-full h-[500vh] bg-[var(--bg-deep)]">
+    <div ref={containerRef} className="relative w-full h-[600vh] bg-[var(--bg-deep)]">
       <div className="sticky top-0 w-full h-screen flex items-center justify-center overflow-hidden pt-16">
         
         <motion.div 
@@ -143,26 +169,33 @@ function AppFlowStory() {
         />
 
         <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center z-10">
-          <motion.h2 style={{ opacity: text1Op }} className="absolute text-center px-4 font-[family-name:var(--font-fraunces)] italic text-[clamp(2.5rem,6vw,5rem)] text-[var(--text-main)] max-w-4xl tracking-tight leading-tight -translate-y-[40vh] md:translate-y-0 md:-translate-x-[35vw]">
+          <motion.h2 style={{ opacity: text1Op }} className={`${textClassesBoth} md:-translate-x-[35vw]`}>
             Pick your <br/><span className="text-[var(--accent-gold)]">Zubaan.</span>
           </motion.h2>
-          <motion.h2 style={{ opacity: text2Op }} className="absolute text-center px-4 font-[family-name:var(--font-fraunces)] italic text-[clamp(2rem,5vw,4rem)] text-[var(--text-main)] max-w-lg tracking-tight leading-tight -translate-y-[40vh] md:translate-y-0 md:translate-x-[35vw]">
+          <motion.h2 style={{ opacity: text2Op }} className={`${textClassesBoth} md:translate-x-[35vw]`}>
             Drop any <br/>screenshot.
           </motion.h2>
-          <motion.h2 style={{ opacity: text3Op }} className="absolute text-center px-4 font-[family-name:var(--font-fraunces)] italic text-[clamp(2rem,5vw,4rem)] text-[var(--text-main)] max-w-lg tracking-tight leading-tight -translate-y-[40vh] md:translate-y-0 md:-translate-x-[35vw]">
+          <motion.h2 style={{ opacity: text3Op }} className={`${textClassesBoth} md:-translate-x-[35vw]`}>
             AI reads the <br/><span className="text-[var(--accent-coral)]">Vibe.</span>
           </motion.h2>
-          <motion.h2 style={{ opacity: text4Op }} className="absolute text-center px-4 font-[family-name:var(--font-fraunces)] italic text-[clamp(2.5rem,6vw,4.5rem)] text-[var(--text-main)] max-w-lg tracking-tight leading-tight -translate-y-[40vh] md:translate-y-0 md:translate-x-[35vw]">
+          <motion.h2 style={{ opacity: text4Op }} className={`${textClassesBoth} md:translate-x-[35vw]`}>
             Three replies, <br/>your voice.
           </motion.h2>
-          <motion.h2 style={{ opacity: text5Op }} className="absolute text-center px-4 font-[family-name:var(--font-fraunces)] italic text-[clamp(2rem,5vw,4rem)] text-[var(--text-main)] max-w-lg tracking-tight leading-tight -translate-y-[40vh] md:translate-y-0 md:-translate-x-[35vw]">
+          <motion.h2 style={{ opacity: text5Op }} className={`${textClassesBoth} md:-translate-x-[35vw]`}>
+            Too spicy? <br/><span className="text-[var(--accent-gold)]">Tune it.</span>
+          </motion.h2>
+          <motion.h2 style={{ opacity: text6Op }} className={`${textClassesBoth} md:translate-x-[35vw]`}>
             Nail the <br/><span className="text-[var(--accent-sage)]">Delivery.</span>
+          </motion.h2>
+          <motion.h2 style={{ opacity: text7Op }} className={`${textClassesBoth} md:-translate-x-[35vw]`}>
+            Send the <br/><span className="text-[#25D366]">Voice Note.</span>
           </motion.h2>
         </div>
 
         <motion.div 
           className="relative z-20 w-full max-w-[320px] aspect-[1/2.15] bg-[var(--bg-deep)] rounded-[48px] border-4 border-white/10 shadow-[0_32px_100px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(255,255,255,0.05)] overflow-hidden flex flex-col items-center"
           style={{ scale: phoneScale }}
+          transition={springTransition}
         >
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-black rounded-b-3xl z-50 flex items-center justify-center gap-2 px-2 border-b border-white/5">
              <div className="w-2 h-2 rounded-full bg-white/20"></div>
@@ -189,7 +222,7 @@ function AppFlowStory() {
             <h3 className="font-[family-name:var(--font-fraunces)] italic text-2xl mb-8">Drop Chat</h3>
             <div className="flex-1 rounded-2xl border-2 border-dashed border-white/20 flex items-center justify-center bg-white/5 relative overflow-hidden">
                <span className="text-4xl opacity-50">+</span>
-               <motion.div style={{ y: screenshotY, opacity: screenshotOp }} className="absolute inset-4 rounded-xl bg-[var(--bg-surface)] p-3 border border-white/10 flex flex-col gap-2">
+               <motion.div style={{ y: screenshotY, opacity: screenshotOp }} transition={springTransition} className="absolute inset-4 rounded-xl bg-[var(--bg-surface)] p-3 border border-white/10 flex flex-col gap-2">
                  <div className="w-1/2 h-6 bg-white/10 rounded-md self-end"></div>
                  <div className="w-3/4 h-8 bg-[var(--accent-coral)]/20 rounded-md rounded-tl-sm self-start"></div>
                  <div className="w-2/3 h-10 bg-[var(--accent-coral)]/20 rounded-md rounded-tl-sm self-start"></div>
@@ -214,20 +247,20 @@ function AppFlowStory() {
               </div>
             </div>
             <div className="flex-1 relative p-5">
-              <motion.div style={{ opacity: replyFlirtyOp }} className="absolute inset-x-5 top-5 flex flex-col gap-4">
-                 <div className="bg-white/5 rounded-2xl rounded-tr-sm p-4 self-end w-[85%] border border-[var(--accent-coral)]/30">
+              <motion.div style={{ opacity: replyFlirtyOp }} transition={springTransition} className="absolute inset-x-5 top-4 flex flex-col gap-4 z-10">
+                 <div className="bg-white/5 rounded-2xl rounded-tr-sm p-4 self-end w-[85%] border border-[var(--accent-coral)]/30 shadow-lg">
                    <p className="font-[family-name:var(--font-inter)] text-[10px] font-bold text-[var(--accent-coral)] mb-1 uppercase tracking-widest">Flirty</p>
                    <p className="font-[family-name:var(--font-inter)] text-[13px]">Acha? Toh kya plan hai tera aaj ke baad? 👀</p>
                  </div>
               </motion.div>
-              <motion.div style={{ opacity: replySavageOp }} className="absolute inset-x-5 top-5 flex flex-col gap-4">
-                 <div className="bg-white/5 rounded-2xl rounded-tr-sm p-4 self-end w-[85%] border border-[var(--accent-gold)]/30">
+              <motion.div style={{ opacity: replySavageOp }} transition={springTransition} className="absolute inset-x-5 top-24 flex flex-col gap-4 z-20">
+                 <div className="bg-[var(--bg-deep)] rounded-2xl rounded-tr-sm p-4 self-end w-[85%] border border-[var(--accent-gold)] shadow-lg scale-105 origin-bottom-right">
                    <p className="font-[family-name:var(--font-inter)] text-[10px] font-bold text-[var(--accent-gold)] mb-1 uppercase tracking-widest">Savage</p>
                    <p className="font-[family-name:var(--font-inter)] text-[13px]">Oh so NOW you reply? Typical lol.</p>
                  </div>
               </motion.div>
-              <motion.div style={{ opacity: replyChillOp }} className="absolute inset-x-5 top-5 flex flex-col gap-4">
-                 <div className="bg-white/5 rounded-2xl rounded-tr-sm p-4 self-end w-[85%] border border-[var(--accent-sage)]/30">
+              <motion.div style={{ opacity: replyChillOp }} transition={springTransition} className="absolute inset-x-5 top-44 flex flex-col gap-4 z-30">
+                 <div className="bg-white/5 rounded-2xl rounded-tr-sm p-4 self-end w-[85%] border border-[var(--accent-sage)]/30 shadow-lg">
                    <p className="font-[family-name:var(--font-inter)] text-[10px] font-bold text-[var(--accent-sage)] mb-1 uppercase tracking-widest">Chill</p>
                    <p className="font-[family-name:var(--font-inter)] text-[13px]">Haha nice — same, I was literally thinking that.</p>
                  </div>
@@ -235,15 +268,35 @@ function AppFlowStory() {
             </div>
           </motion.div>
 
+          <motion.div style={{ opacity: tuneOp }} className="absolute inset-0 flex flex-col p-6 pt-20 bg-[var(--bg-deep)]">
+            <h3 className="font-[family-name:var(--font-fraunces)] italic text-2xl mb-8">Tune & Adjust</h3>
+            <div className="glass-panel p-4 rounded-xl border border-[var(--accent-gold)]/30 mb-8 bg-[rgba(244,185,66,0.05)]">
+              <p className="font-[family-name:var(--font-inter)] text-[13px]">"Oh so NOW you reply? Typical lol."</p>
+            </div>
+            <div className="flex flex-col gap-2 mb-8">
+              <div className="flex justify-between font-[family-name:var(--font-inter)] text-[10px] uppercase text-[var(--text-dim)]">
+                <span>Sweet</span>
+                <span className="text-[var(--accent-coral)]">Spicy</span>
+              </div>
+              <div className="w-full h-2 bg-white/10 rounded-full relative">
+                <motion.div style={{ x: sliderX }} className="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-[var(--accent-gold)] rounded-full shadow-[0_0_10px_var(--accent-gold)]" />
+              </div>
+            </div>
+            <div className="glass-panel p-4 rounded-xl border border-[var(--accent-coral)]/30 bg-[rgba(255,107,107,0.05)] opacity-80">
+              <p className="font-[family-name:var(--font-inter)] text-xs text-[var(--accent-coral)] mb-1">Updated Reply</p>
+              <p className="font-[family-name:var(--font-inter)] text-[13px]">"Wow, an hour later. Your thumbs must be exhausted."</p>
+            </div>
+          </motion.div>
+
           <motion.div style={{ opacity: coachingOp }} className="absolute inset-0 flex flex-col p-6 pt-20 bg-[var(--bg-deep)]">
             <h3 className="font-[family-name:var(--font-fraunces)] italic text-2xl mb-6">Polish Delivery</h3>
             <div className="glass-panel p-4 rounded-xl border border-[var(--accent-sage)]/30 mb-6 bg-[rgba(152,193,164,0.05)]">
               <p className="font-[family-name:var(--font-inter)] text-xs text-[var(--accent-sage)] mb-1">Target Reply</p>
-              <p className="font-[family-name:var(--font-inter)] text-[13px]">"Haha nice — same..."</p>
+              <p className="font-[family-name:var(--font-inter)] text-[13px]">"Wow, an hour later..."</p>
             </div>
             <motion.div style={{ opacity: recordOp }} className="flex-1 flex flex-col items-center justify-center">
               <div className="w-16 h-16 rounded-full bg-[var(--accent-coral)]/20 border border-[var(--accent-coral)] flex items-center justify-center">
-                 <div className="w-6 h-6 rounded-sm bg-[var(--accent-coral)]"></div>
+                 <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 1.5 }} className="w-6 h-6 rounded-sm bg-[var(--accent-coral)]"></motion.div>
               </div>
               <p className="mt-4 font-[family-name:var(--font-inter)] text-xs text-[var(--text-dim)]">Recording your voice...</p>
             </motion.div>
@@ -251,16 +304,32 @@ function AppFlowStory() {
               <h3 className="font-[family-name:var(--font-fraunces)] italic text-2xl mb-8">AI Feedback</h3>
               <div className="space-y-4">
                 <div className="bg-white/5 p-4 rounded-xl border-l-4 border-[var(--accent-gold)]">
-                  <p className="font-[family-name:var(--font-inter)] text-[10px] uppercase text-[var(--text-dim)]">Pace</p>
-                  <p className="font-[family-name:var(--font-inter)] font-semibold text-[14px]">Slightly too fast. Slow down.</p>
-                </div>
-                <div className="bg-white/5 p-4 rounded-xl border-l-4 border-[var(--accent-sage)]">
-                  <p className="font-[family-name:var(--font-inter)] text-[10px] uppercase text-[var(--text-dim)]">Pitch</p>
-                  <p className="font-[family-name:var(--font-inter)] font-semibold text-[14px]">Perfectly chill.</p>
+                  <p className="font-[family-name:var(--font-inter)] text-[10px] uppercase text-[var(--text-dim)]">Sarcasm</p>
+                  <p className="font-[family-name:var(--font-inter)] font-semibold text-[14px]">Perfect bite. Send it.</p>
                 </div>
               </div>
               <button className="mt-auto w-full py-3 bg-[var(--accent-gold)] text-[var(--bg-deep)] font-[family-name:var(--font-inter)] font-bold rounded-full">Share Voice Note</button>
             </motion.div>
+          </motion.div>
+
+          <motion.div style={{ opacity: shareOp }} className="absolute inset-0 flex flex-col p-6 pt-20 bg-[var(--bg-surface)]">
+            <h3 className="font-[family-name:var(--font-fraunces)] italic text-2xl mb-8 text-center text-[#25D366]">Sent via WhatsApp</h3>
+            <div className="flex-1 flex flex-col gap-4">
+               <div className="bg-white/5 rounded-2xl p-3 self-start w-[75%] border border-white/10 text-sm">
+                 Where were you?
+               </div>
+               <motion.div style={{ y: voiceNoteY, opacity: voiceNoteOp }} transition={springTransition} className="bg-[#005c4b] rounded-2xl rounded-tr-sm p-3 self-end w-[85%] flex items-center gap-3">
+                 <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+                   <div className="w-3 h-3 bg-[#005c4b] rounded-[2px] ml-1"></div>
+                 </div>
+                 <div className="flex-1 flex items-center gap-1">
+                   {[1,2,3,4,5,4,2,3,4,5,3,1].map((h, i) => (
+                     <div key={i} className="w-1 bg-[#25D366] rounded-full" style={{ height: `${h * 4}px` }}></div>
+                   ))}
+                 </div>
+                 <span className="text-[10px] text-white/70">0:04</span>
+               </motion.div>
+            </div>
           </motion.div>
 
         </motion.div>
@@ -282,19 +351,33 @@ function Features() {
 
   return (
     <section id="features" className="py-32 px-6 max-w-[1120px] mx-auto">
-      <div className="text-center mb-16">
+      <motion.div 
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="text-center mb-16"
+      >
         <p className="font-[family-name:var(--font-inter)] font-semibold text-[10px] tracking-[4px] text-[var(--accent-coral)] uppercase mb-4">Features</p>
         <h2 className="font-[family-name:var(--font-fraunces)] italic text-[clamp(2.5rem,5vw,4rem)] text-[var(--text-main)] leading-[1.1] tracking-[-1px]">
           Everything your texts were missing.
         </h2>
-      </div>
+      </motion.div>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {features.map((f, i) => (
-          <div key={i} className="glass-panel p-8 rounded-3xl hover:border-[var(--accent-coral)] transition-colors group">
+          <motion.div 
+            key={i} 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -5 }}
+            className="glass-panel p-8 rounded-3xl hover:border-[var(--accent-coral)] transition-all group"
+          >
             <div className="text-3xl mb-6 group-hover:scale-110 transition-transform origin-left">{f.emoji}</div>
             <h3 className="font-[family-name:var(--font-inter)] font-bold text-[18px] text-[var(--text-main)] mb-3">{f.title}</h3>
             <p className="font-[family-name:var(--font-inter)] text-sm text-[var(--text-dim)] leading-relaxed">{f.desc}</p>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>
@@ -312,22 +395,36 @@ function Testimonials() {
   return (
     <section id="testimonials" className="py-32 px-6 bg-black/20 border-y border-[var(--border-glass)]">
       <div className="max-w-[1120px] mx-auto">
-        <div className="text-center mb-16">
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center mb-16"
+        >
           <p className="font-[family-name:var(--font-inter)] font-semibold text-[10px] tracking-[4px] text-[var(--accent-sage)] uppercase mb-4">Word on the street</p>
           <h2 className="font-[family-name:var(--font-fraunces)] italic text-[clamp(2.5rem,5vw,4rem)] text-[var(--text-main)] leading-[1.1] tracking-[-1px]">
             Log kya bol rahe hain.
           </h2>
-        </div>
+        </motion.div>
         <div className="grid md:grid-cols-3 gap-6">
           {reviews.map((r, i) => (
-            <div key={i} className="glass-panel p-8 rounded-3xl flex flex-col relative overflow-hidden">
+            <motion.div 
+              key={i} 
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -5 }}
+              className="glass-panel p-8 rounded-3xl flex flex-col relative overflow-hidden transition-transform"
+            >
               <div className="text-4xl text-[var(--accent-sage)] opacity-20 font-[family-name:var(--font-fraunces)] absolute top-6 right-6">"</div>
               <p className="font-[family-name:var(--font-inter)] text-[15px] leading-relaxed text-[var(--text-main)] italic mb-8 flex-1">"{r.text}"</p>
               <div>
                 <p className="font-[family-name:var(--font-inter)] font-bold text-[14px] text-[var(--text-main)]">{r.name}</p>
                 <p className="font-[family-name:var(--font-inter)] text-[12px] text-[var(--text-dim)] mt-1">{r.context}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -339,15 +436,27 @@ function Testimonials() {
 function Pricing() {
   return (
     <section id="pricing" className="py-32 px-6 max-w-[1120px] mx-auto">
-      <div className="text-center mb-16">
+      <motion.div 
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="text-center mb-16"
+      >
         <p className="font-[family-name:var(--font-inter)] font-semibold text-[10px] tracking-[4px] text-[var(--accent-gold)] uppercase mb-4">Pricing</p>
         <h2 className="font-[family-name:var(--font-fraunces)] italic text-[clamp(2.5rem,5vw,4rem)] text-[var(--text-main)] leading-[1.1] tracking-[-1px] mb-4">
           Simple. No subscription games.
         </h2>
         <p className="font-[family-name:var(--font-inter)] text-[var(--text-dim)]">Start free. Upgrade when you are ready.</p>
-      </div>
+      </motion.div>
       <div className="grid md:grid-cols-2 gap-8 max-w-[800px] mx-auto">
-        <div className="glass-panel p-8 rounded-3xl flex flex-col">
+        <motion.div 
+          initial={{ opacity: 0, x: -40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="glass-panel p-8 rounded-3xl flex flex-col"
+        >
           <h3 className="font-[family-name:var(--font-inter)] font-bold text-xl text-[var(--text-main)] mb-2">Free</h3>
           <p className="font-[family-name:var(--font-inter)] text-[var(--text-dim)] mb-6 text-sm">Per month. Always free.</p>
           <div className="text-4xl font-[family-name:var(--font-fraunces)] italic text-[var(--text-main)] mb-8">₹0</div>
@@ -357,9 +466,16 @@ function Pricing() {
             <li className="flex items-center gap-3"><span className="text-[var(--accent-sage)]">✓</span> All chat apps supported</li>
             <li className="flex items-center gap-3"><span className="text-[var(--accent-sage)]">✓</span> Copy to clipboard</li>
           </ul>
-        </div>
+        </motion.div>
         
-        <div className="glass-panel p-8 rounded-3xl flex flex-col border-[var(--accent-gold)] relative overflow-hidden">
+        <motion.div 
+          initial={{ opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          whileHover={{ y: -5 }}
+          className="glass-panel p-8 rounded-3xl flex flex-col border-[var(--accent-gold)] relative overflow-hidden transition-transform"
+        >
           <div className="absolute top-0 left-0 right-0 h-1 bg-[var(--accent-gold)]" />
           <h3 className="font-[family-name:var(--font-inter)] font-bold text-xl text-[var(--text-main)] mb-2">Zubaan Pro</h3>
           <p className="font-[family-name:var(--font-inter)] text-[var(--text-dim)] mb-6 text-sm">Billed monthly. Cancel anytime.</p>
@@ -371,8 +487,14 @@ function Pricing() {
             <li className="flex items-center gap-3"><span className="text-[var(--accent-gold)]">✓</span> Multi-round conversations</li>
             <li className="flex items-center gap-3"><span className="text-[var(--accent-gold)]">✓</span> Priority AI processing</li>
           </ul>
-          <button className="w-full font-[family-name:var(--font-inter)] font-semibold text-[13px] text-[var(--bg-deep)] bg-[var(--accent-gold)] rounded-full py-3 hover:scale-105 transition-transform shadow-[0_0_20px_rgba(244,185,66,0.4)]">Go Pro</button>
-        </div>
+          <motion.button 
+            whileHover={{ scale: 1.05 }} 
+            whileTap={{ scale: 0.95 }}
+            className="w-full font-[family-name:var(--font-inter)] font-semibold text-[13px] text-[var(--bg-deep)] bg-[var(--accent-gold)] rounded-full py-3 shadow-[0_0_20px_rgba(244,185,66,0.4)]"
+          >
+            Go Pro
+          </motion.button>
+        </motion.div>
       </div>
     </section>
   )

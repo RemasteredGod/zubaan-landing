@@ -51,47 +51,6 @@ body {
   border-bottom: 1px solid var(--border-glass);
 }
 
-/* Scroll-Driven Animations: Progressive Enhancement */
-@supports (animation-timeline: scroll()) {
-  .scroll-reveal {
-    animation: reveal-element linear both;
-    animation-timeline: view();
-    animation-range: entry 10% cover 30%;
-  }
-
-  .scroll-parallax-slow {
-    animation: parallax-element linear both;
-    animation-timeline: scroll();
-    --parallax-distance: 100px;
-  }
-  
-  .scroll-parallax-fast {
-    animation: parallax-element linear both;
-    animation-timeline: scroll();
-    --parallax-distance: 250px;
-  }
-
-  .scroll-scale-up {
-    animation: scale-up linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 40%;
-  }
-}
-
-@keyframes reveal-element {
-  from { opacity: 0; transform: translateY(60px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-@keyframes parallax-element {
-  from { transform: translateY(0); }
-  to { transform: translateY(var(--parallax-distance)); }
-}
-
-@keyframes scale-up {
-  from { opacity: 0; transform: translateY(100px) scale(0.85); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
 
 /* Hero entrance */
 @starting-style {
