@@ -65,11 +65,13 @@ const PORT = process.env.PORT || 3001
 // ── CORS: allow only your Vercel domain ──────────────────────────────────────
 app.use(cors({
   origin: [
-    'https://zubaan.app',           // replace with your actual Vercel URL
-    'https://www.zubaan.app',
+    'https://zubaan.live',
+    'https://www.zubaan.live',
     'http://localhost:3000',        // local dev
+    'http://localhost:3001',        // local dev
   ],
-  methods: ['POST'],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
 }))
 app.use(express.json())
 
