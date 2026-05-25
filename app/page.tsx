@@ -450,7 +450,7 @@ function WaitlistSection() {
     setStatus('loading')
     setErrorMsg('')
     try {
-      const res = await fetch('https://reachify.quest/waitlist', {
+      const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
