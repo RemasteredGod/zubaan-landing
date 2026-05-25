@@ -36,17 +36,13 @@ function ZubaanMark({ size = 56, animated = true }: { size?: number; animated?: 
 // ─── Founders Note ─────────────────────────────────────────────────────────────
 function FoundersNote() {
   return (
-    <div className="fixed bottom-6 left-6 z-[100] px-4 w-full max-w-[300px] pointer-events-none hidden md:block">
-      <div className="glass-panel border border-[var(--accent-gold-glow)] bg-[rgba(20,16,42,0.85)] rounded-2xl p-4 flex gap-4 items-start shadow-[0_8px_32px_rgba(0,0,0,0.4)] pointer-events-auto transition-transform hover:-translate-y-1">
-        <div className="text-[20px] shrink-0">✨</div>
-        <div className="flex-1 text-left">
-          <p className="font-[family-name:var(--font-inter)] text-[12px] font-bold text-[var(--accent-gold)] uppercase tracking-widest mb-1">
-            Beta Preview
-          </p>
-          <p className="font-[family-name:var(--font-inter)] text-[13px] leading-relaxed text-[var(--text-main)]">
-            Zubaan is currently an incomplete work in progress. This site showcases our vision for the future of authentic AI communication.
-          </p>
-        </div>
+    <div className="fixed top-0 left-0 right-0 z-[200] pointer-events-none">
+      <div className="flex items-center justify-center gap-2 py-2 px-4 bg-[rgba(244,185,66,0.12)] border-b border-[var(--accent-gold-glow)] backdrop-blur-md pointer-events-auto">
+        <span className="text-[14px]">✨</span>
+        <p className="font-[family-name:var(--font-inter)] text-[12px] text-[var(--text-main)]">
+          <span className="font-bold text-[var(--accent-gold)] mr-2">Beta Preview</span>
+          Zubaan is in active development — this showcases our vision.
+        </p>
       </div>
     </div>
   )
@@ -65,7 +61,7 @@ function Nav() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'glass-nav' : 'bg-transparent border-transparent'}`}
+      className={`fixed top-8 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'glass-nav' : 'bg-transparent border-transparent'}`}
       style={{ borderBottomWidth: scrolled ? '1px' : '0px' }}
     >
       <div className="max-w-[1120px] mx-auto px-6 h-16 flex items-center justify-between">
@@ -79,14 +75,8 @@ function Nav() {
           <a href="#features" className="font-[family-name:var(--font-inter)] font-medium text-[13px] text-[var(--text-dim)] no-underline hidden md:block hover:text-[var(--text-main)] transition-colors">
             Features
           </a>
-          <a href="#testimonials" className="font-[family-name:var(--font-inter)] font-medium text-[13px] text-[var(--text-dim)] no-underline hidden md:block hover:text-[var(--text-main)] transition-colors">
-            Reviews
-          </a>
-          <a href="#pricing" className="font-[family-name:var(--font-inter)] font-medium text-[13px] text-[var(--text-dim)] no-underline hidden sm:block hover:text-[var(--text-main)] transition-colors">
-            Pricing
-          </a>
-          <a href="#download" className="font-[family-name:var(--font-inter)] font-semibold text-[13px] text-[var(--bg-deep)] bg-[var(--accent-gold)] flex items-center justify-center min-h-[44px] rounded-full px-6 py-2 no-underline transition-transform hover:scale-105 active:scale-95">
-            Download
+          <a href="#waitlist" className="font-[family-name:var(--font-inter)] font-semibold text-[13px] text-[var(--bg-deep)] bg-[var(--accent-gold)] flex items-center justify-center min-h-[44px] rounded-full px-6 py-2 no-underline transition-transform hover:scale-105 active:scale-95">
+            Join Waitlist
           </a>
         </div>
       </div>
@@ -98,14 +88,6 @@ function Nav() {
 function AppFlowStory() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] })
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
 
   // ── Background & Phone Scale ──
   const glowColor = useTransform(scrollYProgress, 
@@ -113,9 +95,7 @@ function AppFlowStory() {
     ['rgba(244,185,66,0.15)', 'rgba(255,107,107,0.15)', 'rgba(152,193,164,0.15)', 'rgba(244,185,66,0.15)', 'rgba(152,193,164,0.15)', 'rgba(255,107,107,0.15)', 'rgba(244,185,66,0.15)', 'rgba(152,193,164,0.15)']
   )
   
-  const phoneScaleDesktop = useTransform(scrollYProgress, [0, 0.05], [0.8, 1])
-  const phoneScaleMobile = useTransform(scrollYProgress, [0, 0.05], [0.55, 0.65])
-  const phoneScale = isMobile ? phoneScaleMobile : phoneScaleDesktop
+  const phoneScale = useTransform(scrollYProgress, [0, 0.05], [0.82, 1])
   
   // ── Text Overlays (Outside Phone) ──
   const text1Op = useTransform(scrollYProgress, [0, 0.05, 0.1, 0.12], [0, 1, 1, 0])
@@ -153,15 +133,16 @@ function AppFlowStory() {
   const voiceNoteY = useTransform(scrollYProgress, [0.92, 0.96], [50, 0])
   const voiceNoteOp = useTransform(scrollYProgress, [0.92, 0.96], [0, 1])
 
-  const textClassesBoth = "absolute z-30 font-[family-name:var(--font-fraunces)] italic tracking-tight leading-tight transition-all duration-500 " +
-    "bottom-[8vh] left-1/2 -translate-x-1/2 w-[90%] max-w-sm text-2xl text-center glass-panel px-6 py-5 rounded-2xl shadow-2xl border-[var(--accent-gold-glow)] " +
-    "md:bottom-auto md:left-auto md:w-auto md:max-w-lg md:text-[clamp(2.5rem,5vw,4.5rem)] md:text-left md:bg-transparent md:px-0 md:py-0 md:rounded-none md:border-none md:shadow-none md:z-10"
+  const textBase = "absolute z-30 font-[family-name:var(--font-fraunces)] italic tracking-tight leading-tight "
+  const textMobile = "bottom-[12vh] left-1/2 -translate-x-1/2 w-[88%] text-[1.6rem] text-center bg-[rgba(10,8,25,0.82)] backdrop-blur-lg border border-white/10 px-5 py-4 rounded-2xl shadow-2xl "
+  const textDesktop = "md:bottom-auto md:left-auto md:translate-x-0 md:w-auto md:text-[clamp(2.2rem,4vw,4rem)] md:text-left md:bg-transparent md:backdrop-blur-none md:border-none md:px-0 md:py-0 md:rounded-none md:shadow-none md:z-10 "
+  const textClassesBoth = textBase + textMobile + textDesktop
 
   const springTransition = { type: "spring" as const, stiffness: 400, damping: 30 }
 
   return (
     <div ref={containerRef} className="relative w-full h-[600vh] bg-[var(--bg-deep)]">
-      <div className="sticky top-0 w-full h-screen flex items-center justify-center overflow-hidden pt-16">
+      <div className="sticky top-0 w-full h-screen flex items-center justify-center overflow-hidden pt-24">
         
         <motion.div 
           className="absolute inset-0 pointer-events-none blur-[80px] rounded-full scale-150 transition-colors duration-300"
@@ -193,7 +174,7 @@ function AppFlowStory() {
         </div>
 
         <motion.div 
-          className="relative z-20 w-full max-w-[320px] aspect-[1/2.15] bg-[var(--bg-deep)] rounded-[48px] border-4 border-white/10 shadow-[0_32px_100px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(255,255,255,0.05)] overflow-hidden flex flex-col items-center"
+          className="relative z-20 w-[min(320px,72vw)] aspect-[1/2.15] bg-[var(--bg-deep)] rounded-[48px] border-4 border-white/10 shadow-[0_32px_100px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(255,255,255,0.05)] overflow-hidden flex flex-col items-center"
           style={{ scale: phoneScale }}
           transition={springTransition}
         >
@@ -246,24 +227,18 @@ function AppFlowStory() {
                 <span className="w-2 h-2 rounded-full bg-[var(--accent-sage)]"></span>
               </div>
             </div>
-            <div className="flex-1 relative p-5">
-              <motion.div style={{ opacity: replyFlirtyOp }} transition={springTransition} className="absolute inset-x-5 top-4 flex flex-col gap-4 z-10">
-                 <div className="bg-white/5 rounded-2xl rounded-tr-sm p-4 self-end w-[85%] border border-[var(--accent-coral)]/30 shadow-lg">
-                   <p className="font-[family-name:var(--font-inter)] text-[10px] font-bold text-[var(--accent-coral)] mb-1 uppercase tracking-widest">Flirty</p>
-                   <p className="font-[family-name:var(--font-inter)] text-[13px]">Acha? Toh kya plan hai tera aaj ke baad? 👀</p>
-                 </div>
+            <div className="flex-1 flex flex-col gap-3 p-4 pt-5 overflow-hidden">
+              <motion.div style={{ opacity: replyFlirtyOp }} className="bg-white/5 rounded-2xl rounded-tr-sm p-4 self-end w-[88%] border border-[var(--accent-coral)]/30 shadow-lg shrink-0">
+                <p className="font-[family-name:var(--font-inter)] text-[10px] font-bold text-[var(--accent-coral)] mb-1 uppercase tracking-widest">Flirty</p>
+                <p className="font-[family-name:var(--font-inter)] text-[13px]">Acha? Toh kya plan hai tera aaj ke baad? 👀</p>
               </motion.div>
-              <motion.div style={{ opacity: replySavageOp }} transition={springTransition} className="absolute inset-x-5 top-24 flex flex-col gap-4 z-20">
-                 <div className="bg-[var(--bg-deep)] rounded-2xl rounded-tr-sm p-4 self-end w-[85%] border border-[var(--accent-gold)] shadow-lg scale-105 origin-bottom-right">
-                   <p className="font-[family-name:var(--font-inter)] text-[10px] font-bold text-[var(--accent-gold)] mb-1 uppercase tracking-widest">Savage</p>
-                   <p className="font-[family-name:var(--font-inter)] text-[13px]">Oh so NOW you reply? Typical lol.</p>
-                 </div>
+              <motion.div style={{ opacity: replySavageOp }} className="bg-[var(--bg-deep)] rounded-2xl rounded-tr-sm p-4 self-end w-[88%] border border-[var(--accent-gold)] shadow-lg shrink-0">
+                <p className="font-[family-name:var(--font-inter)] text-[10px] font-bold text-[var(--accent-gold)] mb-1 uppercase tracking-widest">Savage</p>
+                <p className="font-[family-name:var(--font-inter)] text-[13px]">Oh so NOW you reply? Typical lol.</p>
               </motion.div>
-              <motion.div style={{ opacity: replyChillOp }} transition={springTransition} className="absolute inset-x-5 top-44 flex flex-col gap-4 z-30">
-                 <div className="bg-white/5 rounded-2xl rounded-tr-sm p-4 self-end w-[85%] border border-[var(--accent-sage)]/30 shadow-lg">
-                   <p className="font-[family-name:var(--font-inter)] text-[10px] font-bold text-[var(--accent-sage)] mb-1 uppercase tracking-widest">Chill</p>
-                   <p className="font-[family-name:var(--font-inter)] text-[13px]">Haha nice — same, I was literally thinking that.</p>
-                 </div>
+              <motion.div style={{ opacity: replyChillOp }} className="bg-white/5 rounded-2xl rounded-tr-sm p-4 self-end w-[88%] border border-[var(--accent-sage)]/30 shadow-lg shrink-0">
+                <p className="font-[family-name:var(--font-inter)] text-[10px] font-bold text-[var(--accent-sage)] mb-1 uppercase tracking-widest">Chill</p>
+                <p className="font-[family-name:var(--font-inter)] text-[13px]">Haha nice — same, I was literally thinking that.</p>
               </motion.div>
             </div>
           </motion.div>
@@ -338,203 +313,286 @@ function AppFlowStory() {
   )
 }
 
-// ─── Features ─────────────────────────────────────────────────────────────────
+// ─── Features (Scroll-driven alternating blocks) ─────────────────────────────
+function FeatureBlock({ feature, index, isLast }: { feature: { title: string; desc: string; accent: string; number: string }; index: number; isLast: boolean }) {
+  const isEven = index % 2 === 0
+  const ref = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] })
+  const y = useTransform(scrollYProgress, [0, 0.5, 1], [80, 0, -30])
+  const opacity = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [0, 1, 1, 0.3])
+  const lineScale = useTransform(scrollYProgress, [0.1, 0.45], [0, 1])
+
+  return (
+    <div ref={ref} className={`relative ${isLast ? '' : 'mb-8 md:mb-0'}`}>
+      <motion.div
+        style={{ y, opacity }}
+        className={`max-w-[1120px] mx-auto px-6 py-16 md:py-28 flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} items-start md:items-center gap-8 md:gap-16`}
+      >
+        {/* Accent indicator */}
+        <div className="flex flex-col items-center gap-4 shrink-0">
+          <span
+            className="font-[family-name:var(--font-fraunces)] italic text-[clamp(4rem,8vw,7rem)] leading-none tracking-tighter"
+            style={{ color: feature.accent, opacity: 0.15 }}
+          >
+            {feature.number}
+          </span>
+          <motion.div
+            style={{ scaleY: lineScale, background: feature.accent }}
+            className="w-[2px] h-16 origin-top hidden md:block rounded-full"
+          />
+        </div>
+
+        {/* Text content */}
+        <div className={`flex-1 ${isEven ? 'md:text-left' : 'md:text-right'}`}>
+          <motion.div
+            initial={{ opacity: 0, x: isEven ? -40 : 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <p
+              className="font-[family-name:var(--font-inter)] font-bold text-[10px] tracking-[4px] uppercase mb-4"
+              style={{ color: feature.accent }}
+            >
+              0{feature.number}
+            </p>
+            <h3 className="font-[family-name:var(--font-fraunces)] italic text-[clamp(2rem,4vw,3.2rem)] text-[var(--text-main)] leading-[1.1] tracking-[-0.5px] mb-5">
+              {feature.title}
+            </h3>
+            <p className="font-[family-name:var(--font-inter)] text-[15px] md:text-[17px] text-[var(--text-dim)] leading-relaxed max-w-[520px]" style={isEven ? {} : { marginLeft: 'auto' }}>
+              {feature.desc}
+            </p>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Subtle divider */}
+      {!isLast && (
+        <div className="max-w-[1120px] mx-auto px-6">
+          <div className="h-[1px] bg-gradient-to-r from-transparent via-[var(--border-glass)] to-transparent" />
+        </div>
+      )}
+    </div>
+  )
+}
+
 function Features() {
   const features = [
-    { title: "Tone-Aware Replies", desc: "Zubaan detects the emotional energy of every message — flirty, passive-aggressive, casual, or serious — and matches it.", emoji: "🎯" },
-    { title: "Voice Note Generator", desc: "Convert any reply into a natural-sounding voice note. Your words, your vibe, delivered in audio. Pro feature.", emoji: "🎙️" },
-    { title: "Multi-Round Conversations", desc: "Keep going. Upload their reply, get three more options. Zubaan remembers the full thread context.", emoji: "🔄" },
-    { title: "Tune & Adjust", desc: "Too spicy? Not spicy enough? Hit 'Tune' and tell Zubaan what to tweak. More savage. More sweet. More you.", emoji: "🎛️" },
-    { title: "Works Everywhere", desc: "WhatsApp, Instagram, Bumble, Hinge, Telegram — if you can screenshot it, Zubaan can read it.", emoji: "📱" },
-    { title: "Hinglish Native", desc: "Built for the way South Asians actually text. Hindi, English, Hinglish, and Romanised Urdu all work.", emoji: "🇮🇳" }
+    {
+      title: "Reads the vibe,\nnails the reply.",
+      desc: "Zubaan detects tone — flirty, passive-aggressive, casual, or dead serious — and crafts replies that match the energy. Not generic. Not robotic. Yours.",
+      accent: "var(--accent-coral)",
+      number: "1",
+    },
+    {
+      title: "Your voice,\nnot a voice note from a stranger.",
+      desc: "Turn any reply into a voice note that sounds like you delivered it. Pick a reply, hit record, get AI coaching on your delivery, then send.",
+      accent: "var(--accent-gold)",
+      number: "2",
+    },
+    {
+      title: "Dial the spice\nup or down.",
+      desc: "Every reply can be tuned — sweeter, sharper, more savage, more chill. Slide a slider. Tell Zubaan what's off. It adjusts on the spot.",
+      accent: "var(--accent-sage)",
+      number: "3",
+    },
+    {
+      title: "Screenshot any app.\nZubaan handles the rest.",
+      desc: "WhatsApp, Instagram, Bumble, Hinge, Telegram — if you can screenshot it, Zubaan reads it. Share directly or drop from your gallery.",
+      accent: "var(--accent-coral)",
+      number: "4",
+    },
+    {
+      title: "Hinglish native.\nBuilt for how you actually text.",
+      desc: "Hindi, English, Hinglish, Romanised Urdu — Zubaan speaks the way South Asians actually talk. No stiff translations. No formal nonsense.",
+      accent: "var(--accent-gold)",
+      number: "5",
+    },
   ]
 
   return (
-    <section id="features" className="py-32 px-6 max-w-[1120px] mx-auto">
-      <motion.div 
+    <section id="features" className="relative py-16 md:py-24">
+      {/* Section header */}
+      <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="text-center mb-16"
+        className="text-center mb-8 md:mb-16 px-6"
       >
-        <p className="font-[family-name:var(--font-inter)] font-semibold text-[10px] tracking-[4px] text-[var(--accent-coral)] uppercase mb-4">Features</p>
-        <h2 className="font-[family-name:var(--font-fraunces)] italic text-[clamp(2.5rem,5vw,4rem)] text-[var(--text-main)] leading-[1.1] tracking-[-1px]">
-          Everything your texts were missing.
+        <p className="font-[family-name:var(--font-inter)] font-semibold text-[10px] tracking-[4px] text-[var(--accent-coral)] uppercase mb-4">What makes it different</p>
+        <h2 className="font-[family-name:var(--font-fraunces)] italic text-[clamp(2.5rem,5vw,4rem)] text-[var(--text-main)] leading-[1.05] tracking-[-1px]">
+          Everything your texts<br />were missing.
         </h2>
       </motion.div>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {features.map((f, i) => (
-          <motion.div 
-            key={i} 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-            whileHover={{ y: -5 }}
-            className="glass-panel p-8 rounded-3xl hover:border-[var(--accent-coral)] transition-all group"
-          >
-            <div className="text-3xl mb-6 group-hover:scale-110 transition-transform origin-left">{f.emoji}</div>
-            <h3 className="font-[family-name:var(--font-inter)] font-bold text-[18px] text-[var(--text-main)] mb-3">{f.title}</h3>
-            <p className="font-[family-name:var(--font-inter)] text-sm text-[var(--text-dim)] leading-relaxed">{f.desc}</p>
-          </motion.div>
-        ))}
-      </div>
+
+      {/* Feature blocks */}
+      {features.map((f, i) => (
+        <FeatureBlock key={i} feature={f} index={i} isLast={i === features.length - 1} />
+      ))}
     </section>
   )
 }
 
-// ─── Testimonials ─────────────────────────────────────────────────────────────
-function Testimonials() {
-  const reviews = [
-    { text: "Mujhe nahi pata tha main itna witty ho sakta tha tbh. This app is dangerous.", name: "Rahul M.", context: "Delhi · Bumble user" },
-    { text: "Finally something that sounds like ME and not some formal AI robot. The flirty mode is 💀", name: "Priya S.", context: "Mumbai · Instagram" },
-    { text: "Bhai voice note feature is actually insane. Sent it directly, she thought I was being so smooth.", name: "Arjun K.", context: "Bangalore · WhatsApp" }
-  ]
+// ─── Waitlist ─────────────────────────────────────────────────────────────────
+function WaitlistSection() {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [errorMsg, setErrorMsg] = useState('')
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email || !email.includes('@')) {
+      setErrorMsg('Please enter a valid email address.')
+      setStatus('error')
+      return
+    }
+    setStatus('loading')
+    setErrorMsg('')
+    try {
+      const res = await fetch('https://reachify.quest/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data?.message || 'Something went wrong.')
+      }
+      setStatus('success')
+      setEmail('')
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Could not connect. Try again.'
+      setErrorMsg(message)
+      setStatus('error')
+    }
+  }
 
   return (
-    <section id="testimonials" className="py-32 px-6 bg-black/20 border-y border-[var(--border-glass)]">
-      <div className="max-w-[1120px] mx-auto">
-        <motion.div 
+    <section id="waitlist" className="relative py-32 px-6 overflow-hidden">
+      {/* Ambient glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_50%,rgba(244,185,66,0.08),transparent)] pointer-events-none" />
+      <div className="relative z-10 max-w-[680px] mx-auto text-center">
+        <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center mb-16"
         >
-          <p className="font-[family-name:var(--font-inter)] font-semibold text-[10px] tracking-[4px] text-[var(--accent-sage)] uppercase mb-4">Word on the street</p>
-          <h2 className="font-[family-name:var(--font-fraunces)] italic text-[clamp(2.5rem,5vw,4rem)] text-[var(--text-main)] leading-[1.1] tracking-[-1px]">
-            Log kya bol rahe hain.
+          <p className="font-[family-name:var(--font-inter)] font-semibold text-[10px] tracking-[4px] text-[var(--accent-gold)] uppercase mb-6">
+            Early Access
+          </p>
+          <h2 className="font-[family-name:var(--font-fraunces)] italic text-[clamp(2.5rem,5vw,4rem)] text-[var(--text-main)] leading-[1.05] tracking-[-1px] mb-6">
+            Be first in line.<br />
+            <span className="text-[var(--accent-gold)]">Zubaan is almost ready.</span>
           </h2>
+          <p className="font-[family-name:var(--font-inter)] text-[var(--text-dim)] text-base leading-relaxed max-w-[480px] mx-auto mb-12">
+            We're putting the finishing touches on something special. Drop your email and we'll ping you the moment doors open.
+          </p>
         </motion.div>
-        <div className="grid md:grid-cols-3 gap-6">
-          {reviews.map((r, i) => (
-            <motion.div 
-              key={i} 
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -5 }}
-              className="glass-panel p-8 rounded-3xl flex flex-col relative overflow-hidden transition-transform"
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {status === 'success' ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              className="glass-panel border border-[var(--accent-gold)] rounded-3xl p-10 flex flex-col items-center gap-4"
             >
-              <div className="text-4xl text-[var(--accent-sage)] opacity-20 font-[family-name:var(--font-fraunces)] absolute top-6 right-6">"</div>
-              <p className="font-[family-name:var(--font-inter)] text-[15px] leading-relaxed text-[var(--text-main)] italic mb-8 flex-1">"{r.text}"</p>
-              <div>
-                <p className="font-[family-name:var(--font-inter)] font-bold text-[14px] text-[var(--text-main)]">{r.name}</p>
-                <p className="font-[family-name:var(--font-inter)] text-[12px] text-[var(--text-dim)] mt-1">{r.context}</p>
-              </div>
+              <div className="text-5xl">🎉</div>
+              <h3 className="font-[family-name:var(--font-fraunces)] italic text-2xl text-[var(--accent-gold)]">You're on the list!</h3>
+              <p className="font-[family-name:var(--font-inter)] text-sm text-[var(--text-dim)] max-w-xs">
+                We'll reach out to <span className="text-[var(--text-main)] font-medium">{email || 'you'}</span> as soon as Zubaan launches. Sit tight. 🔥
+              </p>
             </motion.div>
-          ))}
-        </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="glass-panel border border-[var(--border-glass)] rounded-3xl p-8 flex flex-col gap-5 text-left">
+              <div className="flex flex-col gap-2">
+                <label
+                  htmlFor="waitlist-email"
+                  className="font-[family-name:var(--font-inter)] text-[11px] font-semibold tracking-[3px] uppercase text-[var(--text-dim)]"
+                >
+                  Your Email
+                </label>
+                <input
+                  id="waitlist-email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={e => { setEmail(e.target.value); setStatus('idle'); setErrorMsg('') }}
+                  disabled={status === 'loading'}
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 font-[family-name:var(--font-inter)] text-[15px] text-[var(--text-main)] placeholder:text-[var(--text-dim)] outline-none focus:border-[var(--accent-gold)] focus:ring-2 focus:ring-[rgba(244,185,66,0.2)] transition-all disabled:opacity-50"
+                />
+                {status === 'error' && errorMsg && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="font-[family-name:var(--font-inter)] text-[12px] text-[var(--accent-coral)] mt-1"
+                  >
+                    {errorMsg}
+                  </motion.p>
+                )}
+              </div>
+
+              <motion.button
+                type="submit"
+                disabled={status === 'loading'}
+                whileHover={status !== 'loading' ? { scale: 1.02 } : {}}
+                whileTap={status !== 'loading' ? { scale: 0.97 } : {}}
+                className="w-full font-[family-name:var(--font-inter)] font-semibold text-[14px] text-[var(--bg-deep)] bg-[var(--accent-gold)] rounded-full py-4 shadow-[0_0_30px_rgba(244,185,66,0.35)] transition-opacity disabled:opacity-60 disabled:cursor-not-allowed relative overflow-hidden"
+              >
+                {status === 'loading' ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Saving your spot...
+                  </span>
+                ) : (
+                  'Notify Me at Launch →'
+                )}
+              </motion.button>
+
+              <p className="font-[family-name:var(--font-inter)] text-[11px] text-[var(--text-dim)] text-center">
+                No spam. No subscriptions. Just one message when we're live.
+              </p>
+            </form>
+          )}
+        </motion.div>
+
+
       </div>
     </section>
   )
 }
 
-// ─── Pricing ──────────────────────────────────────────────────────────────────
-function Pricing() {
-  return (
-    <section id="pricing" className="py-32 px-6 max-w-[1120px] mx-auto">
-      <motion.div 
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="text-center mb-16"
-      >
-        <p className="font-[family-name:var(--font-inter)] font-semibold text-[10px] tracking-[4px] text-[var(--accent-gold)] uppercase mb-4">Pricing</p>
-        <h2 className="font-[family-name:var(--font-fraunces)] italic text-[clamp(2.5rem,5vw,4rem)] text-[var(--text-main)] leading-[1.1] tracking-[-1px] mb-4">
-          Simple. No subscription games.
-        </h2>
-        <p className="font-[family-name:var(--font-inter)] text-[var(--text-dim)]">Start free. Upgrade when you are ready.</p>
-      </motion.div>
-      <div className="grid md:grid-cols-2 gap-8 max-w-[800px] mx-auto">
-        <motion.div 
-          initial={{ opacity: 0, x: -40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="glass-panel p-8 rounded-3xl flex flex-col"
-        >
-          <h3 className="font-[family-name:var(--font-inter)] font-bold text-xl text-[var(--text-main)] mb-2">Free</h3>
-          <p className="font-[family-name:var(--font-inter)] text-[var(--text-dim)] mb-6 text-sm">Per month. Always free.</p>
-          <div className="text-4xl font-[family-name:var(--font-fraunces)] italic text-[var(--text-main)] mb-8">₹0</div>
-          <ul className="flex flex-col gap-4 font-[family-name:var(--font-inter)] text-sm text-[var(--text-dim)] mb-10 flex-1">
-            <li className="flex items-center gap-3"><span className="text-[var(--accent-sage)]">✓</span> 2 reply sets per day</li>
-            <li className="flex items-center gap-3"><span className="text-[var(--accent-sage)]">✓</span> Basic tone detection</li>
-            <li className="flex items-center gap-3"><span className="text-[var(--accent-sage)]">✓</span> All chat apps supported</li>
-            <li className="flex items-center gap-3"><span className="text-[var(--accent-sage)]">✓</span> Copy to clipboard</li>
-          </ul>
-        </motion.div>
-        
-        <motion.div 
-          initial={{ opacity: 0, x: 40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          whileHover={{ y: -5 }}
-          className="glass-panel p-8 rounded-3xl flex flex-col border-[var(--accent-gold)] relative overflow-hidden transition-transform"
-        >
-          <div className="absolute top-0 left-0 right-0 h-1 bg-[var(--accent-gold)]" />
-          <h3 className="font-[family-name:var(--font-inter)] font-bold text-xl text-[var(--text-main)] mb-2">Zubaan Pro</h3>
-          <p className="font-[family-name:var(--font-inter)] text-[var(--text-dim)] mb-6 text-sm">Billed monthly. Cancel anytime.</p>
-          <div className="text-4xl font-[family-name:var(--font-fraunces)] italic text-[var(--accent-gold)] mb-8">₹299<span className="text-sm text-[var(--text-dim)] not-italic font-[family-name:var(--font-inter)] font-normal">/mo</span></div>
-          <ul className="flex flex-col gap-4 font-[family-name:var(--font-inter)] text-sm text-[var(--text-dim)] mb-10 flex-1">
-            <li className="flex items-center gap-3"><span className="text-[var(--accent-gold)]">✓</span> Unlimited reply sets</li>
-            <li className="flex items-center gap-3"><span className="text-[var(--accent-gold)]">✓</span> Advanced tone tuning</li>
-            <li className="flex items-center gap-3"><span className="text-[var(--accent-gold)]">✓</span> Voice note generation</li>
-            <li className="flex items-center gap-3"><span className="text-[var(--accent-gold)]">✓</span> Multi-round conversations</li>
-            <li className="flex items-center gap-3"><span className="text-[var(--accent-gold)]">✓</span> Priority AI processing</li>
-          </ul>
-          <motion.button 
-            whileHover={{ scale: 1.05 }} 
-            whileTap={{ scale: 0.95 }}
-            className="w-full font-[family-name:var(--font-inter)] font-semibold text-[13px] text-[var(--bg-deep)] bg-[var(--accent-gold)] rounded-full py-3 shadow-[0_0_20px_rgba(244,185,66,0.4)]"
-          >
-            Go Pro
-          </motion.button>
-        </motion.div>
-      </div>
-    </section>
-  )
-}
-
-// ─── CTA Footer ─────────────────────────────────────────────────────────────
+// ─── Footer ──────────────────────────────────────────────────────────────────
 function FooterCTA() {
   return (
-    <footer id="download" className="relative py-32 px-6 flex flex-col items-center justify-center text-center overflow-hidden border-t border-[var(--border-glass)] bg-[var(--bg-surface)]">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--accent-gold-glow),transparent_60%)] pointer-events-none" />
+    <footer className="relative py-16 px-6 border-t border-[var(--border-glass)] bg-[var(--bg-surface)]">
       <div className="relative z-10 w-full max-w-[1120px] mx-auto">
-        <div className="flex flex-col items-center">
-          <ZubaanMark size={48} animated />
-          <h2 className="font-[family-name:var(--font-fraunces)] italic text-[clamp(2.5rem,5vw,4rem)] text-[var(--text-main)] mt-8 mb-4 tracking-[-1px]">
-            Kya scene hai?
-          </h2>
-          <p className="font-[family-name:var(--font-inter)] text-base text-[var(--text-dim)] max-w-[400px] mx-auto mb-10">
-            Stop leaving chats on read because you don't know what to say. Download Zubaan and reply like you meant it.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 mb-20">
-            <a href="#" className="glass-panel flex items-center gap-3 rounded-xl px-5 py-3 hover:border-[var(--accent-gold-glow)] transition-colors">
-              <p className="font-[family-name:var(--font-inter)] font-semibold text-[15px]">Download on App Store</p>
-            </a>
-            <a href="#" className="glass-panel flex items-center gap-3 rounded-xl px-5 py-3 hover:border-[var(--accent-gold-glow)] transition-colors">
-              <p className="font-[family-name:var(--font-inter)] font-semibold text-[15px]">Get it on Google Play</p>
-            </a>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <ZubaanMark size={28} animated={false} />
+            <span className="font-[family-name:var(--font-fraunces)] italic text-xl text-[var(--accent-gold)]">Zubaan</span>
+            <span className="font-[family-name:var(--font-inter)] text-[11px] text-[var(--text-dim)] ml-1">Beta Preview</span>
           </div>
-        </div>
-        
-        {/* Footer Links */}
-        <div className="flex flex-col md:flex-row items-center justify-between border-t border-white/10 pt-8 mt-8">
-          <p className="font-[family-name:var(--font-inter)] text-[12px] text-[var(--text-dim)] mb-4 md:mb-0">
-            © 2026 Zubaan. Reply in your voice.
-          </p>
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-4">
             <a href="/privacy" className="font-[family-name:var(--font-inter)] text-[12px] text-[var(--text-dim)] hover:text-[var(--text-main)] transition-colors">Privacy Policy</a>
             <a href="/terms" className="font-[family-name:var(--font-inter)] text-[12px] text-[var(--text-dim)] hover:text-[var(--text-main)] transition-colors">Terms of Service</a>
             <a href="/contact" className="font-[family-name:var(--font-inter)] text-[12px] text-[var(--text-dim)] hover:text-[var(--text-main)] transition-colors">Support</a>
             <a href="/delete-account" className="font-[family-name:var(--font-inter)] text-[12px] text-[var(--text-dim)] hover:text-[var(--accent-coral)] transition-colors">Delete account</a>
           </div>
+          <p className="font-[family-name:var(--font-inter)] text-[12px] text-[var(--text-dim)]">
+            © 2026 Zubaan. Reply in your voice.
+          </p>
         </div>
       </div>
     </footer>
@@ -548,8 +606,7 @@ export default function LandingPage() {
       <Nav />
       <AppFlowStory />
       <Features />
-      <Testimonials />
-      <Pricing />
+      <WaitlistSection />
       <FooterCTA />
     </main>
   )
